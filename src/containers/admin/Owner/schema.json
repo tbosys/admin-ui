@@ -1,0 +1,29 @@
+{
+  "key": "owner",
+  "api": "crm",
+  "title": "Owner",
+  "table": ["id", "name", "email", "active"],
+  "sections": [
+    {
+      "title": "main",
+      "widths": [12, 6, 3],
+      "columns": ["name", "email", "active"]
+    }
+  ],
+  "properties": {
+    "id": {},
+    "email": {},
+    "active": {
+      "title": "Activo",
+      "render": "boolean",
+      "filter": "boolean",
+      "default": true,
+      "width": 100
+    },
+    "name": { "title": "Nombre", "width": 300 },
+    "createdBy": {},
+    "updatedBy": {},
+    "createdAt": {},
+    "updatedAt": {}
+  }
+}

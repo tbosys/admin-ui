@@ -1,0 +1,109 @@
+{
+  "key": "pagoDocumento",
+  "api": "crm",
+  "title": "Recibo",
+  "table": ["id", "clienteId", "ownerId", "monto", "fecha", "recibo", "consecutivo"],
+  "sections": [
+    {
+      "title": "main",
+      "widths": [12, 6, 3],
+      "columns": ["clienteId", "monto", "recibo", "fecha"]
+    },
+
+    {
+      "title": "lineas",
+      "columns": ["lineaPagoDocumento"],
+      "widths": [12, 12, 12]
+    },
+    {
+      "title": "other",
+      "columns": ["formaPago", "referencia", "moneda", "tipoCambio"],
+      "widths": [12, 6, 3]
+    }
+  ],
+  "properties": {
+    "id": {},
+
+    "clienteId": {},
+    "comisiona": {
+      "extends": "string",
+      "title": "Comision"
+    },
+    "tags": {
+      "extends": "string",
+      "title": "Tag",
+      "width": 350
+    },
+    "contado": {
+      "extends": "string",
+      "width": 100,
+
+      "title": "Contado"
+    },
+
+    "fechaIngreso": {
+      "extends": "date",
+      "title": "Fecha Ingreso",
+
+      "width": 120
+    },
+    "fecha": {
+      "extends": "fecha",
+      "default": "NOW",
+      "title": "Fecha"
+    },
+    "recibo": {
+      "extends": "integer",
+      "width": 100,
+      "title": "Recibo"
+    },
+    "consecutivo": {
+      "extends": "string",
+      "width": 100,
+
+      "title": "Consecutivo"
+    },
+    "referencia": {
+      "extends": "string",
+      "title": "Referencia"
+    },
+    "moneda": {},
+    "formaPago": {
+      "extends": "select",
+      "title": "Forma de Pago",
+      "enum": [
+        "deposito",
+        "cheque",
+        "transferencia",
+        "tarjeta",
+        "efectivo",
+        "nota credito",
+        "nota debito",
+        "reversion"
+      ],
+
+      "default": "transferencia"
+    },
+
+    "monto": {
+      "extends": "number",
+      "title": "Monto",
+      "readOnly": true
+    },
+    "montoPendiente": {
+      "extends": "number",
+      "title": "Monto Pendiente"
+    },
+    "approvedBy": {},
+    "ownerId": {},
+
+    "vendedorId": {},
+    "tipoCambio": {
+      "title": "tipoCambio",
+      "default": 1
+    },
+    "updatedBy": {},
+    "createdAt": {},
+    "updatedAt": {}
+  }
+}

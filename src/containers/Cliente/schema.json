@@ -1,0 +1,152 @@
+{
+  "key": "cliente",
+  "api": "crm",
+  "title": "Clientes",
+  "table": ["id", "name", "ownerId"],
+  "sections": [
+    {
+      "title": "main",
+      "widths": [12, 6, 3],
+      "columns": ["name", "ownerId"]
+    }
+  ],
+  "properties": {
+    "id": {},
+    "activo": {
+      "type": "boolean",
+      "title": "Activo",
+      "formatter": "BooleanFormatter",
+      "filterable": true,
+      "default": true
+    },
+    "aprobacionManual": {
+      "type": "boolean",
+      "title": "AprobacionManual",
+      "formatter": "BooleanFormatter",
+      "filterable": true,
+      "default": true
+    },
+    "name": { "title": "Nomnbre", "width": 400 },
+    "tags": {
+      "title": "Tags",
+      "render": "multiselect",
+      "filter": "multiselect"
+    },
+    "cedula": {
+      "title": "Cédula",
+      "extends": "string"
+    },
+    "vencimientoCedula": {
+      "extends": "date",
+      "title": "Vencimiento Cedula"
+    },
+    "correoDocumentosElectronicos": {
+      "extends": "string",
+      "title": "Email Envio FE",
+      "width": 140
+    },
+    "correoDocumentosElectronicosCC": {
+      "extends": "string",
+      "title": "Copias de correo electrónico "
+    },
+
+    "tipoCedula": {
+      "extends": "select",
+      "enum": ["Jurídica", "Física", "DIMEX", "NITE", "Internacional"],
+      "title": "Tipo Cedula"
+    },
+    "descripcion": {
+      "extends": "string",
+
+      "title": "Descripcion"
+    },
+    "direccion": {
+      "extends": "string",
+      "title": "Dirección",
+      "default": "San Jose",
+      "width": 200
+    },
+    "telefono": {
+      "title": "Teléfono",
+      "extends": "string"
+    },
+    "sitioWeb": {
+      "title": "Sitio Web",
+      "extends": "string"
+    },
+    "creditoPlazo": {
+      "extends": "plazo",
+      "title": "Plazo (día)"
+    },
+    "creditoLimite": {
+      "extends": "number",
+
+      "title": "Límite (₡) ",
+      "default": 0
+    },
+    "formaEntrega": {
+      "title": "Forma de entrega"
+    },
+    "posicionGPS": {
+      "title": "Posición GPS "
+    },
+    "ubicacion": {
+      "title": "Ubicacion"
+    },
+    "contado": {
+      "extends": "select",
+      "width": 100,
+
+      "enum": ["contado", "credito"],
+      "title": "Contado",
+
+      "select": "(case when creditoPlazo = 0 then 'contado' else 'credito' end)"
+    },
+    "cobroDia": {
+      "extends": "select",
+      "enum": ["lunes", "martes", "miercoles", "jueves", "viernes"],
+
+      "title": "Dia Cobro"
+    },
+
+    "transporteId": {
+      "extends": "autocomplete",
+      "title": "Transporte"
+    },
+    "clienteGrupoComercialId": {
+      "extends": "autocomplete",
+      "title": "Grupo Comercial"
+    },
+
+    "segmentoId": {
+      "extends": "autocomplete",
+      "title": "Segmento"
+    },
+
+    "zonaId": {},
+
+    "ultimoContacto": {
+      "extends": "date",
+      "title": "Ultimo Contacto"
+    },
+
+    "plazoPago": {
+      "extends": "plazo",
+      "title": "Promedio(días)",
+
+      "width": 100
+    },
+
+    "plazoMaximo": {
+      "extends": "plazo",
+
+      "title": "Plazo Maximo"
+    },
+
+    "createdBy": {},
+    "updatedBy": {},
+    "createdAt": {},
+    "updatedAt": {},
+    "ownerId": {}
+  }
+}
