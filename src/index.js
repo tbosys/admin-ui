@@ -4,8 +4,8 @@ import "./index.css";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import * as serviceWorker from "./serviceWorker";
-import App from "./App";
-import { StoreProvider } from "business/hooks/useStore";
+import App from "@tbos/App";
+import { StoreProvider } from "@tbos/business/hooks/useStore";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 // pick a date util library
