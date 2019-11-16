@@ -1,36 +1,35 @@
 import react, { lazy } from "react";
-const Orden = lazy(() => import("./Orden"));
-const Recibo = lazy(() => import("./Recibo"));
-const Saldo = lazy(() => import("./Saldo"));
-const Cliente = lazy(() => import("./Cliente"));
-const Documento = lazy(() => import("./Documento"));
-const Config = lazy(() => import("./Config"));
-const Inicio = lazy(() => import("./Inicio"));
-const Owner = lazy(() => import("./admin/Owner"));
+
+const orden = lazy(() => import("./Orden"));
+const recibo = lazy(() => import("./Recibo"));
+const saldo = lazy(() => import("./Saldo"));
+const cliente = lazy(() => import("./Cliente"));
+const documento = lazy(() => import("./Documento"));
+const config = lazy(() => import("./Config"));
+const inicio = lazy(() => import("./Inicio"));
+const owner = lazy(() => import("./admin/Owner"));
 
 //
+
 //Add Apps HERE
 export const Apps = {
-  Orden,
-  Owner,
-  Recibo,
-  Cliente,
-  Config,
-  Inicio,
-  Saldo,
-  Documento
+  "": inicio,
+  owner,
+  home: inicio,
+  rol: ["id", { key: "table", extends: "string" }],
+  profile: [
+    "id",
+    { key: "name", extends: "name" },
+    { key: "description", extends: "text" }
+  ]
 };
-//
 //
 
 export const Menu = {
   home: "Inicio",
-  ventas: {
-    owner: "Owner",
-    orden: "Orden",
-    recibo: "Recibo",
-    cliente: "Cliente",
-    saldo: "Saldo",
-    documento: "Documento"
+  admin: {
+    owner: "User",
+    rol: "Rol",
+    profile: "Profile"
   }
 };

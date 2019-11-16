@@ -1,9 +1,12 @@
 import React, { Suspense } from "react";
 
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
+import StandardContainer from "containers/StandardContainer";
 
 export default function Routes(props) {
-  const routes = [<Route key="base" path={"/login"} component={props.Login} />];
+  const routes = [
+    <Route exact key="base" path={"/login"} component={props.Login} />
+  ];
 
   /*
     menu = {
@@ -19,12 +22,17 @@ export default function Routes(props) {
   function pushToRoute(keys) {
     var lastKey = keys[keys.length - 1];
     var App = props.apps[lastKey];
-    const route = `/${keys.map(key => key.toLowerCase()).join("/")}`;
+
+    if (Array.isArray(App)) App = StandardContainer(lastKey, App);
+    const route = `/: ${keys.map(key => key.toLowerCase()).join("/")}`;
     routes.push(
       <Route
+        exact
         path={route}
         key={lastKey}
-        render={renderProps => <App toggleMenu={props.toggleMenu} {...renderProps} />}
+        render={renderProps => (
+          <App toggleMenu={props.toggleMenu} {...renderProps} />
+        )}
       />
     );
   }
@@ -34,7 +42,7 @@ export default function Routes(props) {
       var rootValue = menu[rootKey];
 
       if (typeof rootValue == "string") {
-        pushToRoute(keys.concat([rootValue]));
+        pushToRoute(keys.concat([rootKey]));
       } else {
         recurseRoutes(rootValue, keys.concat([rootKey]));
       }
@@ -42,5 +50,8 @@ export default function Routes(props) {
   }
 
   recurseRoutes(props.menu);
-  return routes;
+
+  const catchRoute = <Route render={() => "404"} />;
+
+  return <Switch>{routes.concat([catchRoute])}</Switch>;
 }

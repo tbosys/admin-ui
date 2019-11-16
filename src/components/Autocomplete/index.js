@@ -13,7 +13,8 @@ export default function FormDialog(props) {
   const [view, setView] = React.useState("FIELD");
 
   React.useEffect(() => {
-    if (props.sectionIndex == 0 && props.fieldIndex == 0 && props.isCreate) setView("LIST");
+    if (props.sectionIndex == 0 && props.fieldIndex == 0 && props.isCreate)
+      setView("LIST");
   }, []);
 
   function handleClose() {
@@ -30,7 +31,8 @@ export default function FormDialog(props) {
   }
 
   let value = "";
-  if (props.value && props.value.metadata) value = props.value.metadata[props.column.nameField];
+  if (props.value && props.metadata)
+    value = props.metadata[props.column.nameField];
 
   function renderList() {
     return (
@@ -39,7 +41,8 @@ export default function FormDialog(props) {
         maxWidth={"sm"}
         fullWidth={true}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title">
+        aria-labelledby="form-dialog-title"
+      >
         <DialogTitle id="form-dialog-title">{props.column.title}</DialogTitle>
         <DialogContent>
           <List onSelect={onSelect} column={props.column} />
@@ -55,7 +58,8 @@ export default function FormDialog(props) {
                 setView("CREATE");
               }}
               variant="contained"
-              color="primary">
+              color="primary"
+            >
               Crear Nuevo
             </Button>
           ) : null}
@@ -66,7 +70,13 @@ export default function FormDialog(props) {
 
   function renderCreate() {
     if (view != "CREATE") return null;
-    return <Create onCancel={() => setView("LIST")} onSave={onSave} column={props.column} />;
+    return (
+      <Create
+        onCancel={() => setView("LIST")}
+        onSave={onSave}
+        column={props.column}
+      />
+    );
   }
 
   return (

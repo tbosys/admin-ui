@@ -4,7 +4,7 @@ import Form from "components/Form";
 import useMutation from "business/hooks/useMutation";
 import useFetch from "business/hooks/useFetch";
 import Error from "components/Error";
-import I18N from "i18n";
+//import I18N from "i18n";
 
 export default function EditForm(props) {
   //
@@ -33,10 +33,10 @@ export default function EditForm(props) {
   }, []);
 
   React.useEffect(() => {
-    var newValues = {};
     if (!data.edges) return;
+    var newValues = values;
     var dataValues = data.edges[0];
-    if (!dataValues) alert(I18N.ID_NOT_FOUND(props.id)); //TODO
+    if (!dataValues) return alert("object not found"); //TODO
 
     Object.keys(dataValues).forEach(key => {
       newValues[key] = { value: dataValues[key] };
@@ -53,11 +53,15 @@ export default function EditForm(props) {
   //
   //Side Effects
   function onSave() {
-    var body = {};
-    Object.keys(values).forEach(key => (body[key] = values[key].value));
-    mutate(body, true).then(responseData => {
-      props.handleClose(responseData);
+    var body = { id: props.id };
+
+    Object.keys(values).forEach(key => {
+      var column = props.schema.properties[key];
+      var value = values[key].value;
+      if (value !== data.edges[0][key])
+        body[column.keyAlias || column.key] = value;
     });
+    mutate(body, true).then(responseData => props.handleClose(responseData));
   }
 
   function onChange(data) {
@@ -73,6 +77,7 @@ export default function EditForm(props) {
     <Fragment>
       <Error error={error} />
       <Form
+        id={props.id}
         loading={loading}
         error={error}
         fullScreen={true}

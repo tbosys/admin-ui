@@ -23,9 +23,14 @@
       "render": "string",
       "sort": true
     },
+    "text": {
+      "filter": "text",
+      "render": "text",
+      "sort": false,
+      "width": 400
+    },
     "string": {
       "sortable": true,
-      "title": "Orden",
       "filter": "string",
       "render": "string",
       "sort": true

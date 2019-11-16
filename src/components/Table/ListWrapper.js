@@ -5,6 +5,7 @@ import Table from "components/Table";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
+import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 
 import useQuery from "business/hooks/useQuery";
@@ -80,28 +81,53 @@ export default function StandardApp(props) {
   }
 
   function renderContext() {
-    if (props.enableCreate)
+    if (props.enableCreate || props.actions)
       return (
-        <Fragment>
-          <Box className={classes.relative} m={1} mt={2} mb={2}>
-            <Grid
-              container
-              direction="row"
-              justify="space-between"
-              alignItems="center"
-            >
-              <Fab
-                onClick={props.onCreate}
-                size="medium"
-                color="primary"
-                aria-label="add"
-                className={classes.fab}
-              >
-                <AddIcon />
-              </Fab>
+        <Box className={classes.relative} m={1} mt={2} mb={2}>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+          >
+            <Grid item>
+              <Grid container spacing={1} direction="row" alignItems="center">
+                {(props.actions || []).map(action => {
+                  return (
+                    <Grid item>
+                      <Button
+                        disabled={
+                          !action.standalone && selectedRows.length == 0
+                        }
+                        onClick={() =>
+                          props.onActionClick(action, selectedRows)
+                        }
+                        size="small"
+                        variant="outlined"
+                        color="primary"
+                      >
+                        {action.title}
+                      </Button>
+                    </Grid>
+                  );
+                })}
+              </Grid>
             </Grid>
-          </Box>
-        </Fragment>
+            {props.enableCreate ? (
+              <Grid item>
+                <Fab
+                  onClick={props.onCreate}
+                  size="medium"
+                  color="primary"
+                  aria-label="add"
+                  className={classes.fab}
+                >
+                  <AddIcon />
+                </Fab>
+              </Grid>
+            ) : null}
+          </Grid>
+        </Box>
       );
     else if (props.renderContext) props.renderContext({ selectedRows, filter });
     else return null;

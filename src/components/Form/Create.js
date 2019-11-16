@@ -14,7 +14,11 @@ export default function Create(props) {
 
   function onSave() {
     var body = {};
-    Object.keys(values).forEach(key => (body[key] = values[key].value));
+
+    Object.keys(values).forEach(key => {
+      var column = props.schema.properties[key];
+      body[column.keyAlias || column.key] = values[key].value;
+    });
     mutate(body, true).then(responseData => props.handleClose(responseData));
   }
 

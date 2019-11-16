@@ -5,9 +5,14 @@
   "table": ["id", "name", "email", "active"],
   "sections": [
     {
-      "title": "main",
-      "widths": [12, 6, 3],
+      "title": "Usuario",
+      "widths": [12, 4, 3],
       "columns": ["name", "email", "active"]
+    },
+    {
+      "title": "Permisos",
+      "widths": [12, 12, 12],
+      "columns": ["profileSelector"]
     }
   ],
   "properties": {
@@ -20,7 +25,13 @@
       "default": true,
       "width": 100
     },
-    "name": { "title": "Nombre", "width": 300 },
+    "profileSelector": {
+      "keyAlias": "_profileOwner",
+      "title": "Perfiles",
+      "render": "component",
+      "default": []
+    },
+    "name": { "title": "Nombre", "width": 300, "sort": true },
     "createdBy": {},
     "updatedBy": {},
     "createdAt": {},
