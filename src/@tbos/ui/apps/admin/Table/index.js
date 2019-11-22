@@ -4,37 +4,41 @@ import { makeStyles } from "@material-ui/core/styles";
 import BaseSchema from "./schema.json";
 import { loadSchema, enrichSections } from "@tbos/ui/business/schemas";
 import StandardListApp from "@tbos/ui/components/StandardListApp";
-import ProfileSelector from "./components/ProfileSelector";
+import Properties from "./components/Properties";
 import { useHistory } from "react-router-dom";
-const Schema = loadSchema(BaseSchema);
+import useMetadata from "@tbos/ui/business/hooks/useMetadata";
 
 export default function ReciboApp(props) {
   let history = useHistory();
 
+  const { fetch, data, loading: loading, error: error } = useMetadata({
+    path: `crm/metadata/get`
+  });
+
+  if (error) return "error";
+
+  if (loading) {
+    return "loading";
+  }
+
+  if (!data) {
+    fetch({ name: props.match.params.name });
+    return "loading";
+  }
+
+  const Schema = loadSchema(data);
   const sections = enrichSections({
     schema: Schema,
-    components: { profileSelector: ProfileSelector }
+    components: { properties: Properties }
   });
 
   //Render
 
-  function onAction(action) {
-    if (action.title == "Administrar Roles") {
-      history.push("/rol");
-    } else if (action.title == "Administrar Perfiles") {
-      history.push("/profile");
-    } else if (action.title == "Login") {
-      console.log("ok");
-    }
-  }
+  function onAction(action) {}
 
   return (
     <StandardListApp
-      actions={[
-        { title: "Administrar Perfiles", standalone: true },
-        { title: "Administrar Roles", standalone: true },
-        { title: "Login" }
-      ]}
+      actions={[]}
       onActionClick={onAction}
       enableCreate
       toggleMenu={props.toggleMenu}

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@tbos/ui/components/Table/ListWrapper";
 
-import Create from "@tbos/ui/components/Form/Create";
+import Create from "./Create";
 import Edit from "@tbos/ui/components/Form/Edit";
 import { enrichSection } from "@tbos/ui/business/schemas";
 import { useHistory } from "react-router-dom";
@@ -16,7 +16,7 @@ export default function ReciboApp(props) {
 
   React.useEffect(() => {
     var id = parseInt(props.match.params.id);
-    if (id < 0 || id > 0) setViewId(id);
+    if (id == -1 || id > 0) setViewId(id);
   }, []);
 
   const handleFormClose = response => {

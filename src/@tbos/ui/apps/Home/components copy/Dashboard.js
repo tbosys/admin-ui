@@ -17,10 +17,10 @@ import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems, secondaryListItems } from "./components/listItems";
-import Chart from "./components/Chart";
-import Deposits from "./components/Deposits";
-import Orders from "./components/Orders";
+import { mainListItems, secondaryListItems } from "./listItems";
+import Chart from "./Chart";
+import Deposits from "./Deposits";
+import Orders from "./Orders";
 
 function Copyright() {
   return (
@@ -130,24 +130,17 @@ export default function Dashboard(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar>
+      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
             onClick={props.toggleMenu}
-            className={clsx(classes.menuButton, open)}
-          >
+            className={clsx(classes.menuButton, open)}>
             <MenuIcon />
           </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
           </Typography>
           <IconButton color="inherit">
@@ -190,8 +183,7 @@ export default function Dashboard(props) {
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
         }}
-        open={open}
-      >
+        open={open}>
         <List>{mainListItems}</List>
         <Divider />
         <List>{secondaryListItems}</List>

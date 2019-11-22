@@ -3,7 +3,8 @@ import Box from "@material-ui/core/Box";
 import ReactDataGrid from "react-data-grid";
 
 import FilterModal from "@tbos/ui/components/Table/components/FilterModal";
-import GroupModal from "@tbos/ui/components/Table/components/GroupModal";
+
+import JSONRenderer from "@tbos/ui/components/Table/components/renderers/JSON";
 import IntegerRenderer from "@tbos/ui/components/Table/components/renderers/Integer";
 import BooleanRenderer from "@tbos/ui/components/Table/components/renderers/Boolean";
 import Photo from "@tbos/ui/components/Table/components/renderers/Photo";
@@ -11,20 +12,35 @@ import NumberRenderer from "@tbos/ui/components/Table/components/renderers/Numbe
 import Autocomplete from "@tbos/ui/components/Table/components/renderers/Autocomplete";
 import Id from "@tbos/ui/components/Table/components/renderers/Id";
 import Toolbar from "@tbos/ui/components/Table/components/Toolbar";
+import useMutation from "@tbos/ui/business/hooks/useMutation";
+import useQuery from "@tbos/ui/business/hooks/useQuery";
 
 export default function Example(props) {
   const [columns, setColumns] = useState([]);
   const [viewColumns, setViewColumns] = useState([]);
+  const [viewGroups, setViewGroups] = useState([]);
+  const [viewSorts, setViewSorts] = useState([]);
+  const [viewSums, setViewSums] = useState([]);
 
   const [showFilters, setShowFilters] = React.useState(false);
-  const [showGroups, setShowGroups] = React.useState(false);
+
   const [filterCount, setFilterCount] = React.useState(0);
-  const [groupCount, setGroupCount] = React.useState(0);
+
   const [selectedIndexes, setSelectedIndexes] = React.useState([]);
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [filters, setFilters] = React.useState([]);
-  const [groups, setGroups] = React.useState([]);
   const [filterName, setFilterName] = React.useState("");
+
+  const { mutate, response, loading, error } = useMutation({
+    path: `crm/list/create`,
+    transformValue: true
+  });
+
+  const { data: lists, fetch } = useQuery({ path: "list/get", limit: 100 });
+
+  React.useEffect(() => {
+    fetchLists();
+  }, []);
 
   React.useEffect(() => {
     var parsedColumns = columnsFromSchema();
@@ -85,9 +101,10 @@ export default function Example(props) {
     else props.filter(queryFilters);
   }
 
-  function onGroup(groups) {
-    setGroups(groups);
-    if (setGroupCount) setGroupCount(groups.length);
+  function fetchLists() {
+    fetch({
+      filters: [["table", "=", props.schema.key]]
+    });
   }
 
   function onShowFilters() {
@@ -98,20 +115,78 @@ export default function Example(props) {
     setShowFilters(false);
   }
 
-  function onShowGroups() {
-    setShowGroups(!showGroups);
-  }
-
-  function onHideGroups() {
-    setShowGroups(false);
-  }
-
   function rowGetter(i) {
     return props.rows[i];
   }
 
   function updateColumns(columns) {
     setViewColumns(columns);
+  }
+
+  function updateGroups(groups) {
+    setViewGroups(groups);
+  }
+
+  function updateSorts(sorts) {
+    setViewSorts(sorts);
+  }
+
+  function updateSums(sums) {
+    setViewSums(sums);
+  }
+
+  function onSaveReport(name) {
+    mutate(
+      {
+        name,
+        table: props.schema.key,
+        type: "report",
+        columns: viewColumns.map(column => column.key),
+        sorts: viewSorts,
+        filters,
+        groups: viewGroups,
+        sums: viewSums
+      },
+      true
+    ).then(responseData => {
+      fetchLists();
+    });
+  }
+
+  function onSavePivot(name) {
+    mutate(
+      {
+        name,
+        table: props.schema.key,
+        type: "pivot",
+        columns: viewColumns.map(column => column.key),
+        sorts: viewSorts,
+        filters,
+        groups: viewGroups,
+        sums: viewSums
+      },
+      true
+    ).then(responseData => {
+      fetchLists();
+    });
+  }
+
+  function onSaveFilter(name) {
+    mutate(
+      {
+        name,
+        table: props.schema.key,
+        type: "list",
+        columns: viewColumns.map(column => column.key),
+        sorts: viewSorts,
+        filters,
+        groups: viewGroups,
+        sums: viewSums
+      },
+      true
+    ).then(responseData => {
+      fetchLists();
+    });
   }
 
   function columnsFromSchema() {
@@ -149,6 +224,8 @@ export default function Example(props) {
     } else if (column.render == "number") {
       if (!column.width) column.width = 150;
       column.formatter = NumberRenderer(column);
+    } else if (column.isJSON) {
+      column.formatter = JSONRenderer(column);
     }
     return column;
   }
@@ -160,6 +237,7 @@ export default function Example(props) {
   return (
     <Fragment>
       <Toolbar
+        lists={lists}
         toggleMenu={props.toggleMenu}
         variant={props.toolbarVariant || "full"}
         selectedRows={selectedRows}
@@ -171,9 +249,10 @@ export default function Example(props) {
         rowCount={props.totalCount}
         filterName={filterName}
         filterCount={filterCount}
-        groupCount={groupCount}
+        onSaveFilter={onSaveFilter}
+        onSaveReport={onSaveReport}
+        onSavePivot={onSavePivot}
         onShowFilters={onShowFilters}
-        onShowGroups={onShowGroups}
         schema={props.schema}
       />
 
@@ -181,21 +260,20 @@ export default function Example(props) {
         <div style={{ width: "100%" }}>
           <FilterModal
             updateColumns={updateColumns}
+            updateGroups={updateGroups}
+            updateSorts={updateSorts}
+            updateSums={updateSums}
             filters={filters}
             filterName={filterName}
             onFilter={onFilter}
             viewColumns={viewColumns}
+            viewGroups={viewGroups}
+            viewSorts={viewSorts}
+            viewSums={viewSums}
             columns={columns}
             metadata={props.metadata}
             open={showFilters || false}
             handleClose={onHideFilters}
-          />
-
-          <GroupModal
-            onGroup={onGroup}
-            columns={columns}
-            open={showGroups || false}
-            handleClose={onHideGroups}
           />
         </div>
       </Box>

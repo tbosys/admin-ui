@@ -137,7 +137,7 @@ export default function Form(props) {
     var values = {};
     var sections = props.sections.map(section => {
       section.columns = section.columns.map(column => {
-        if (column.render == "string")
+        if (column.render == "string" || column.render == "text")
           values[column.key] = { value: column.default || "" };
         else if (column.render == "date")
           values[column.key] = { value: column.default ? new Date() : null };

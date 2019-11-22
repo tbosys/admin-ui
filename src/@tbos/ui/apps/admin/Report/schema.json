@@ -1,0 +1,86 @@
+{
+  "key": "report",
+  "api": "crm",
+  "title": "Report",
+  "table": ["name", "table", "fields", "sums", "groups", "filters"],
+  "sections": [
+    {
+      "title": "Detalles",
+      "widths": [12, 4, 3],
+      "columns": ["name", "table"]
+    },
+    {
+      "title": "Columnas",
+      "widths": [12, 4, 3],
+      "columns": ["fields"]
+    },
+    {
+      "title": "Columnas",
+      "widths": [12, 4, 3],
+      "columns": ["sums", "groups"]
+    },
+    {
+      "title": "Filtros",
+      "widths": [12, 4, 3],
+      "columns": ["filters"]
+    },
+
+    {
+      "title": "Report",
+      "widths": [12, 4, 3],
+      "columns": ["name", "email", "active"]
+    },
+    {
+      "title": "Permisos",
+      "widths": [12, 12, 12],
+      "columns": ["profileSelector"]
+    }
+  ],
+  "properties": {
+    "id": {},
+    "name": {},
+
+    "sums": {
+      "extends": "json",
+      "render": "multiselectDynamic",
+      "route": "reporte/queryProperties",
+      "queryOnChange": ["table"],
+      "title": "Sumas"
+    },
+    "sort": {
+      "extends": "json",
+      "render": "multiselectDynamic",
+      "route": "reporte/queryProperties",
+      "queryOnChange": ["table"],
+      "title": "Orden"
+    },
+    "fields": {
+      "extends": "json",
+      "render": "multiselectDynamic",
+      "route": "reporte/queryProperties",
+      "queryOnChange": ["table"],
+      "title": "Campos"
+    },
+    "table": {
+      "extends": "string",
+      "element": "selectDynamic",
+      "route": "reporte/queryTables",
+      "title": "Tipo"
+    },
+    "filters": {
+      "extends": "json",
+      "isJSON": true,
+      "title": "Filtros"
+    },
+    "groups": {
+      "extends": "json",
+      "element": "multiselectDynamic",
+      "route": "reporte/queryProperties",
+      "queryOnChange": ["table"],
+      "isJSON": true,
+      "title": "Agrupar"
+    },
+    "createdBy": {},
+    "createdAt": {}
+  }
+}

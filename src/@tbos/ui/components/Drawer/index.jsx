@@ -86,25 +86,38 @@ export default function CustomDrawer(props) {
       variant={props.open ? "permanent" : "temporary"}
       classes={{
         paper: classes.drawerPaper
-      }}>
+      }}
+    >
       <div className={classes.toolbar} />
 
       <List
         subheader={
-          <ListSubheader inset={false} classes={{ root: classes.subheader }} component="div">
+          <ListSubheader
+            inset={false}
+            classes={{ root: classes.subheader }}
+            component="div"
+          >
             {props.user ? props.user.name : ""}
           </ListSubheader>
         }
-        className={classes.list}>
+        className={classes.list}
+      >
         {Object.keys(props.menu).map(menuKey => {
           const menuValue = props.menu[menuKey];
 
           const Wrapper = typeof menuValue == "string" ? Link : React.Fragment;
-          const subKeys = typeof menuValue != "string" ? Object.keys(menuValue) : [];
+          const subKeys =
+            typeof menuValue != "string" ? Object.keys(menuValue) : [];
 
           return (
             <Fragment key={menuKey}>
-              <ListItem data-id={menuKey} onClick={onOpen} className={classes.item} key={menuKey} button>
+              <ListItem
+                data-id={menuKey}
+                onClick={onOpen}
+                className={classes.item}
+                key={menuKey}
+                button
+              >
                 <Wrapper to={"/" + menuKey}>
                   <ListItemText
                     className={classes.text}
@@ -132,8 +145,9 @@ export default function CustomDrawer(props) {
                         key={menuKey + subKey}
                         onClick={props.onClose}
                         button
-                        className={classes.nested}>
-                        <Link to={"/" + menuKey + "/" + subKey}>
+                        className={classes.nested}
+                      >
+                        <Link to={"/" + subKey}>
                           <ListItemText
                             className={classes.text}
                             primary={subKey}
@@ -153,7 +167,11 @@ export default function CustomDrawer(props) {
           <ListItemIcon>
             <Exit />
           </ListItemIcon>
-          <ListItemText className={classes.text} primary={"Salir"} classes={{ primary: classes.text }} />
+          <ListItemText
+            className={classes.text}
+            primary={"Salir"}
+            classes={{ primary: classes.text }}
+          />
         </ListItem>
       </List>
     </Drawer>

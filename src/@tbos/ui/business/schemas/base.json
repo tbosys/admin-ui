@@ -35,6 +35,17 @@
       "render": "string",
       "sort": true
     },
+    "json": {
+      "sortable": false,
+      "filter": "string",
+      "render": "string",
+      "sort": true
+    },
+    "csv": {
+      "sortable": false,
+      "filter": "string",
+      "render": "string"
+    },
     "date": {
       "sortable": true,
       "element": "date",

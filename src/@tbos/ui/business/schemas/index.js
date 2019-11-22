@@ -1,6 +1,7 @@
 import BaseSchema from "./base.json";
 
 export function loadSchema(Schema) {
+  Schema.sections = Schema.form;
   Schema.properties = Object.keys(Schema.properties)
     .map(propertyKey => {
       var property = Schema.properties[propertyKey];
@@ -68,11 +69,15 @@ export function createSchema(name, columnArray) {
 
 export function enrichSection({ schema, section, table, components = {} }) {
   if (table) section = { columns: schema.table };
+
   section.columns = section.columns.map(key => {
     var column = {
       ...schema.properties[key]
     };
-    if (components && components[key]) column.component = components[key];
+    if (components && components[key]) {
+      column.render = "component";
+      column.component = components[key];
+    }
 
     return column;
   });

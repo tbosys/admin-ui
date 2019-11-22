@@ -184,18 +184,6 @@ export default function Dashboard(props) {
         </Container>
         <Copyright />
       </main>
-      <Drawer
-        anchor="right"
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
-        }}
-        open={open}
-      >
-        <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
-      </Drawer>
     </div>
   );
 }

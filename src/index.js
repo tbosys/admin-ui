@@ -13,19 +13,17 @@ serviceWorker.unregister();
 const config = lazy(() => import("@tbos/ui/apps/Config"));
 const home = lazy(() => import("@tbos/ui/apps/Home"));
 const owner = lazy(() => import("@tbos/ui/apps/admin/Owner"));
+const report = lazy(() => import("@tbos/ui/apps/admin/Report"));
+const table = lazy(() => import("@tbos/ui/apps/admin/Table"));
 
 //Add Apps HERE
 export const apps = {
   "": home,
   home: home,
   owner,
+  table,
   config,
-  rol: ["id", { key: "table", extends: "string" }],
-  profile: [
-    "id",
-    { key: "name", extends: "name" },
-    { key: "description", extends: "text" }
-  ]
+  report
 };
 //
 
@@ -33,8 +31,8 @@ export const menu = {
   home: "Inicio",
   admin: {
     owner: "User",
-    rol: "Rol",
-    profile: "Profile"
+    report: "Report",
+    db: "Db"
   }
 };
 

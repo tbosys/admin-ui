@@ -1,0 +1,40 @@
+{
+  "key": "table",
+  "api": "crm",
+  "title": "Table",
+
+  "table": ["id", "name", "title"],
+  "sections": [
+    {
+      "title": "Usuario",
+      "widths": [12, 3, 3],
+      "columns": ["name", "title", "shareLevel"]
+    },
+    {
+      "title": "Usuario",
+      "widths": [12, 12, 12],
+      "columns": ["properties"]
+    }
+  ],
+  "properties": {
+    "id": {},
+    "name": {},
+    "title": { "extends": "name", "title": "Title" },
+    "shareLevel": { "extends": "integer", "title": "shareLevel" },
+    "restricted": { "extends": "csv" },
+    "belongsTo": { "extends": "csv" },
+    "table": { "extends": "json" },
+    "form": { "extends": "json" },
+
+    "properties": {
+      "title": "Properties",
+      "render": "component",
+      "default": []
+    },
+
+    "createdBy": {},
+    "updatedBy": {},
+    "createdAt": {},
+    "updatedAt": {}
+  }
+}

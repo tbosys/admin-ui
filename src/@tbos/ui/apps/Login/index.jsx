@@ -93,7 +93,7 @@ function LoginContainer(props) {
         });
         onChangeView("LOADING")();
 
-        props.history.push("/inicio");
+        props.history.push("/");
       })
       .catch(e => {
         debugger;

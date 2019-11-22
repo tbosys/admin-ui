@@ -10,20 +10,26 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 export default function FilterSaveDialog(props) {
   const [name, setName] = React.useState("");
 
-  React.useEffect(() => {
-    setName(props.filterName);
-  }, []);
-
   const handleClose = dontSave => {
-    props.onClose(name, dontSave == false ? false : true);
+    props.onClose();
+  };
+
+  const onSave = dontSave => {
+    props.onSave(name);
   };
 
   return (
     <div>
-      <Dialog open={true} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Guardar Filtro</DialogTitle>
+      <Dialog
+        open={true}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Guardar {props.type}</DialogTitle>
         <DialogContent>
-          <DialogContentText>Desea guardar los cambios a este filtro?</DialogContentText>
+          <DialogContentText>
+            Desea guardar los cambios a este filtro?
+          </DialogContentText>
           <TextField
             autoFocus
             value={name}
@@ -42,10 +48,11 @@ export default function FilterSaveDialog(props) {
             onClick={() => {
               handleClose(false);
             }}
-            color="primary">
-            Filtrar sin Guardar
+            color="primary"
+          >
+            Cerrar
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={onSave} color="primary">
             Guardar
           </Button>
         </DialogActions>

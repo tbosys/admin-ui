@@ -1,22 +1,15 @@
 import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
-import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
-import useFetch from "@tbos/ui/business/hooks/useQuery";
-
+import FilterSaveDialog from "./FilterSaveDialog";
 import AddCircleIcon from "@material-ui/icons/AddCircleOutline";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,11 +38,7 @@ export default function FilterModal(props) {
 
   //Filters are centralized at this level, but they also are shared with the parent
 
-  const { data, fetch } = useFetch({ path: "tableView/get", limit: 100 });
-
-  React.useEffect(() => {
-    fetch({ filters: [["table", "=", props.table]] });
-  }, []);
+  const [showFilterDialog, setShowFilterDialog] = React.useState(false);
 
   const handleFilterIconClick = event => {
     setFilterMenu(event.currentTarget);
@@ -59,7 +48,18 @@ export default function FilterModal(props) {
     setFilterMenu(null);
   };
 
-  function onCreate() {}
+  function onCreate() {
+    setShowFilterDialog(true);
+  }
+
+  function onSave(name) {
+    setShowFilterDialog(false);
+    props.onSave(name);
+  }
+
+  function onClose() {
+    setShowFilterDialog(false);
+  }
 
   function onAll() {}
 
@@ -89,13 +89,22 @@ export default function FilterModal(props) {
 
   return (
     <div className={classes.root}>
+      {showFilterDialog && (
+        <FilterSaveDialog
+          type={props.type}
+          filterName={""}
+          onClose={onClose}
+          onSave={onSave}
+        />
+      )}
+
       <Button
         color="inherit"
         aria-haspopup="true"
         onClick={handleFilterIconClick}
       >
         <span className={classes.language}>
-          {props.filterName || <AllInclusiveIcon className={classes.icon} />}
+          <props.icon className={classes.icon} />
         </span>
         <ExpandMoreIcon fontSize="small" />
       </Button>
@@ -106,32 +115,36 @@ export default function FilterModal(props) {
         open={Boolean(filterMenu)}
         onClose={handleFilterMenuClose}
       >
-        {data.map(filter => (
+        {props.data.map(filter => (
           <MenuItem
             component="a"
             data-no-link="true"
             key={filter.name}
             value={filter.name}
             data-value={filter.name}
-            selected={props.filterName == filter.name}
+            selected={false}
             onClick={onSelectView}
           >
             {filter.name}
           </MenuItem>
         ))}
+
         <Box my={1}>
           <Divider />
         </Box>
-        <MenuItem
-          component="a"
-          data-no-link="true"
-          rel="noopener nofollow"
-          target="_blank"
-          key={"o"}
-          onClick={onAll}
-        >
-          <AllInclusiveIcon fontSize="small" />
-        </MenuItem>
+        {props.enableAllFilter ? (
+          <MenuItem
+            component="a"
+            data-no-link="true"
+            rel="noopener nofollow"
+            target="_blank"
+            key={"o"}
+            onClick={onAll}
+          >
+            <AllInclusiveIcon fontSize="small" />
+          </MenuItem>
+        ) : null}
+
         <MenuItem
           component="a"
           data-no-link="true"

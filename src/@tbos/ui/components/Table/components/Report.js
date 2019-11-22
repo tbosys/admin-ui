@@ -4,17 +4,15 @@ import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import Collapse from "@material-ui/core/Collapse";
 import AddCircle from "@material-ui/icons/AddCircle";
-import Blue from "@material-ui/core/colors/blue";
-
 import IconButton from "@material-ui/core/IconButton";
 import { TextField, Typography } from "@material-ui/core";
 import FilterLine from "./FilterLine";
 
 import ColumnSelector from "./ColumnSelector";
+import FilterSaveDialog from "./FilterSaveDialog";
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -38,27 +36,18 @@ export default function FilterModal(props) {
   const [showFilterDialog, setShowFilterDialog] = React.useState(false);
 
   const [columns, setColumns] = useState([]);
-
   const [selectedColumns, setSelectedColumns] = useState([]);
-  const [selectedGroups, setSelectedGroups] = useState([]);
-  const [selectedSorts, setSelectedSorts] = useState([]);
-  const [selectedSums, setSelectedSums] = useState([]);
+  const [sortColumns, setSortColumns] = useState([]);
 
   React.useEffect(() => {
     setColumns(props.columns);
     setSelectedColumns(props.viewColumns);
-    setSelectedGroups(props.viewGroups);
-    setSelectedSorts(props.viewSorts);
-    setSelectedSums(props.viewSums);
   }, []);
 
   React.useEffect(() => {
     setColumns(props.columns);
-    setSelectedGroups(props.viewGroups);
-    setSelectedSorts(props.viewSorts);
-    setSelectedSums(props.viewSums);
     setSelectedColumns(props.viewColumns);
-  }, [props.columns, props.viewColumns, props.viewGroups, props.viewSorts]);
+  }, [props.columns, props.viewColumns]);
 
   React.useEffect(() => {
     if (props.filters && props.filters.length > 0) setFilters(props.filters);
@@ -66,18 +55,6 @@ export default function FilterModal(props) {
 
   function onUpdateColumns(columns) {
     setSelectedColumns(columns);
-  }
-
-  function onUpdateGroups(groups) {
-    setSelectedGroups(groups);
-  }
-
-  function onUpdateSums(sums) {
-    setSelectedSums(sums);
-  }
-
-  function onUpdateSorts(sorts) {
-    setSelectedSorts(sorts);
   }
 
   function onChangeFilter(filter) {
@@ -110,6 +87,10 @@ export default function FilterModal(props) {
   }
 
   function onShowFilterDialog() {
+    setShowFilterDialog(true);
+  }
+
+  function onFilter(filterName, save) {
     setShowFilterDialog(false);
     var parsedFilters = [];
 
@@ -132,13 +113,16 @@ export default function FilterModal(props) {
     props.onFilter({
       filters: parsedFilters,
       columns: selectedColumns.map(item => item.key),
-      name: null,
-      saveFilter: false
+      name: filterName,
+      saveFilter: save
     });
   }
 
   return (
     <div>
+      {showFilterDialog && (
+        <FilterSaveDialog filterName={props.filterName} onClose={onFilter} />
+      )}
       <Collapse in={props.open}>
         <div
           style={{
@@ -177,50 +161,6 @@ export default function FilterModal(props) {
                   );
                 })}
               </div>
-            </Grid>
-            <Grid className={classes.grow} item xs={12}>
-              <Box
-                style={{ backgroundColor: Blue[100] }}
-                m={1}
-                mt={2}
-                border={2}
-                p={2}
-                borderColor="primary.main"
-                pb={4}
-              >
-                <Grid container spacing={2}>
-                  <Grid className={classes.grow} item xs={4}>
-                    <ColumnSelector
-                      label="Grupos"
-                      updateColumns={onUpdateGroups}
-                      selectedColumns={selectedGroups}
-                      columns={columns}
-                    />
-                    <Typography variant="caption">
-                      En tablas el maximo es 1000
-                    </Typography>
-                  </Grid>
-                  <Grid className={classes.grow} item xs={4}>
-                    <ColumnSelector
-                      label="Sumar"
-                      updateColumns={onUpdateSums}
-                      selectedColumns={selectedSums}
-                      columns={columns}
-                    />
-                    <Typography variant="caption">
-                      Los grupos solamente se utilizan en reportes y pivotes.
-                    </Typography>
-                  </Grid>
-                  <Grid className={classes.grow} item xs={3}>
-                    <ColumnSelector
-                      label="Orden"
-                      updateColumns={onUpdateSorts}
-                      selectedColumns={selectedSorts}
-                      columns={columns}
-                    />
-                  </Grid>
-                </Grid>
-              </Box>
             </Grid>
           </Grid>
 
