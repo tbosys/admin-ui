@@ -79,13 +79,17 @@ export default function StandardListApp(props) {
   }
 
   function onActionClick(actionName, selectedIds) {
-    setVersion(version + 1);
-
     action({
       action: actionName.replace("por ", ""),
       metadata: metadata,
       ids: selectedIds.map(item => item.id)
-    });
+    })
+      .then(response => {
+        return setVersion(version + 1);
+      })
+      .catch(error => {
+        alert(error.message);
+      });
   }
 
   //Render
