@@ -17,10 +17,10 @@ export default function StandardListApp(props) {
   const [viewId, setViewId] = React.useState(null);
   const [metadata, setMetadata] = React.useState(null);
   const [formResponseHistory, setFormResponseHistory] = React.useState([]);
-
   const [version, setVersion] = React.useState(0);
 
   const {
+    fetch: fetchMetadata,
     metadata: loadedMetadata,
     loading: loading,
     error: error
@@ -38,12 +38,24 @@ export default function StandardListApp(props) {
     name: props.match.params.name
   });
 
+  //We reload metadata when route name is changes and we are using dynamic routes
+  React.useEffect(() => {
+    if (metadata && !loading) {
+      setMetadata(null);
+      setViewId(0);
+      setFormResponseHistory([]);
+      setVersion(0);
+      fetchMetadata();
+    }
+  }, [props.match.params.name]);
+
   React.useEffect(() => {
     var id = parseInt(props.match.params.id);
     if (id < 0 || id > 0) setViewId(id);
     else setViewId(0);
   }, []);
 
+  //Loop for metadata loading, used to reload from siblings. ( update table when form changes )
   React.useEffect(() => {
     setMetadata(loadedMetadata);
     setVersion(version + 1);

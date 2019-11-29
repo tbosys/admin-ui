@@ -55,5 +55,5 @@ export default function useFetch({ name, components = {} }) {
   }
 
   if (!loading && !metadata && !error) fetch();
-  return { metadata, loading, error };
+  return { fetch, metadata, loading, error };
 }
