@@ -73,10 +73,17 @@ export default function CustomDrawer(props) {
   const classes = useStyles();
 
   const { fetch, data } = useFetch({ path: "crm/metadata/menu" });
+  let history = useHistory();
 
   React.useEffect(() => {
     if (data.length == 0 && props.open) fetch();
   }, [props.open]);
+
+  function handleClick(schema) {
+    return () => {
+      history.push(schema.key);
+    };
+  }
 
   return (
     <Drawer
@@ -109,14 +116,13 @@ export default function CustomDrawer(props) {
                 key={schema.key}
                 button
               >
-                <Link to={"/" + schema.key}>
-                  <ListItemText
-                    className={classes.text}
-                    primary={schema.title}
-                    secondary={schema.description}
-                    classes={{ primary: classes.text }}
-                  />
-                </Link>
+                <ListItemText
+                  className={classes.text}
+                  primary={schema.title}
+                  onClick={handleClick(schema)}
+                  secondary={schema.description}
+                  classes={{ primary: classes.text }}
+                />
               </ListItem>
             </Fragment>
           );
