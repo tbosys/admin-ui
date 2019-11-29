@@ -5,7 +5,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
 
 import Paper from "@material-ui/core/Paper";
 
@@ -13,13 +12,16 @@ import { Typography, Divider } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Fab from "@material-ui/core/Fab";
 import Box from "@material-ui/core/Box";
 import useQuery from "@tbos/ui/business/hooks/useQuery";
 import PropertyDialog from "./components/PropertyDialog";
+import PropertyTable from "./components/PropertyTable";
+
+import Checkbox from "@material-ui/core/Checkbox";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -108,6 +110,8 @@ export default function ProfileSelector(props) {
     setEditColumnId(null);
   }
 
+  if (props.value.length == null) return null;
+
   return (
     <div>
       {editColumnId != null || showDialog ? (
@@ -121,57 +125,28 @@ export default function ProfileSelector(props) {
         />
       ) : null}
 
-      <Grid container spacing={2} className={classes.root}>
-        <Grid item md={6} xs={12}>
-          <Paper className={classes.paper}>
-            <Grid justify="space-between" container>
-              <Typography>Columns</Typography>
-              <Fab
-                color="primary"
-                className={classes.fab}
-                size="small"
-                onClick={() => {
-                  setShowDialog(true);
-                }}
-              >
-                <AddIcon />
-              </Fab>
-            </Grid>
-            <List
-              className={!matches ? classes.mobileList : classes.list}
-              dense
-              component="div"
-              role="list"
-            >
-              {props.value.map(column => {
-                return (
-                  <React.Fragment>
-                    <ListItem
-                      onClick={selectColumn(column)}
-                      key={column.id}
-                      role="listitem"
-                    >
-                      <ListItemText primary={column.title} />
-                      {typeof column.id == "string" && (
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            onClick={deleteColumn(column)}
-                            edge="end"
-                            aria-label="delete"
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      )}
-                    </ListItem>
-                    <Divider />
-                  </React.Fragment>
-                );
-              })}
-            </List>
-          </Paper>
+      <Paper className={classes.paper}>
+        <Grid justify="space-between" container>
+          <Typography>Columns</Typography>
+          <Fab
+            color="primary"
+            className={classes.fab}
+            size="small"
+            onClick={() => {
+              setShowDialog(true);
+            }}
+          >
+            <AddIcon />
+          </Fab>
         </Grid>
-      </Grid>
+
+        <PropertyTable
+          values={props.values}
+          properties={props.value}
+          onEdit={selectColumn}
+          onDelete={deleteColumn}
+        />
+      </Paper>
     </div>
   );
 }

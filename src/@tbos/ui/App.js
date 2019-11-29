@@ -14,15 +14,11 @@ import { useStore } from "@tbos/ui/business/hooks/useStore";
 import { hot } from "react-hot-loader/root";
 import Drawer from "@tbos/ui/components/Drawer";
 import Login from "@tbos/ui/apps/Login";
-import StandardContainer from "@tbos/ui/apps/StandardContainer";
-import useMetadata from "@tbos/ui/business/hooks/useMetadata";
+import StandardListApp from "@tbos/ui/components/StandardListApp";
 
 function App(props) {
   const classes = useStyles();
   const { state, dispatch } = useStore();
-  const { fetch, data, loading: loading, error: error } = useMetadata({
-    path: `crm/metadata/get`
-  });
 
   React.useEffect(() => {
     dispatch({ type: "init" });
@@ -36,15 +32,8 @@ function App(props) {
 
   function renderApp(renderProps) {
     let App = props.apps[renderProps.match.params.name || ""];
-    if (error) return "Error";
-    if (loading) return <LoadingMessage />;
-    if (!App && !data) {
-      fetch({ name: renderProps.match.params.name });
-      return <LoadingMessage />;
-    }
-    if (!App && data)
-      App = StandardContainer(renderProps.match.params.name, App, data);
-    if (!App) return 404;
+
+    if (!App) App = StandardListApp;
 
     return <App toggleMenu={toggleMenu} {...renderProps} />;
   }
@@ -52,7 +41,7 @@ function App(props) {
   return (
     <div className={classes.root}>
       <Router>
-        <Drawer close={toggleMenu} open={menuOpen} menu={props.menu} />
+        <Drawer close={toggleMenu} open={menuOpen} />
 
         <main className={classes.content}>
           {!state.user || !state.user.loggedIn ? (

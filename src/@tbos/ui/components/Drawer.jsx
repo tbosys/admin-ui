@@ -30,6 +30,9 @@ import SendIcon from "@material-ui/icons/Send";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
+import useFetch from "@tbos/ui/business/hooks/useFetch";
+
+import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -68,17 +71,12 @@ const iconMap = {
 
 export default function CustomDrawer(props) {
   const classes = useStyles();
-  const [openId, setOpenId] = React.useState(-1);
 
-  function onOpen(e) {
-    var id = e.currentTarget.dataset.id;
-    if (openId == id) setOpenId(-1);
-    else setOpenId(id);
-  }
+  const { fetch, data } = useFetch({ path: "crm/metadata/menu" });
 
-  function onClose() {
-    setOpenId();
-  }
+  React.useEffect(() => {
+    if (data.length == 0 && props.open) fetch();
+  }, [props.open]);
 
   return (
     <Drawer
@@ -102,64 +100,24 @@ export default function CustomDrawer(props) {
         }
         className={classes.list}
       >
-        {Object.keys(props.menu).map(menuKey => {
-          const menuValue = props.menu[menuKey];
-
-          const Wrapper = typeof menuValue == "string" ? Link : React.Fragment;
-          const subKeys =
-            typeof menuValue != "string" ? Object.keys(menuValue) : [];
-
+        {data.map(schema => {
           return (
-            <Fragment key={menuKey}>
+            <Fragment key={schema.key}>
               <ListItem
-                data-id={menuKey}
-                onClick={onOpen}
+                data-program={schema.key}
                 className={classes.item}
-                key={menuKey}
+                key={schema.key}
                 button
               >
-                <Wrapper to={"/" + menuKey}>
+                <Link to={"/" + schema.key}>
                   <ListItemText
                     className={classes.text}
-                    primary={menuKey}
+                    primary={schema.title}
+                    secondary={schema.description}
                     classes={{ primary: classes.text }}
                   />
-
-                  {subKeys.length > 0 ? (
-                    <div>
-                      {openId == menuKey ? (
-                        <ExpandLess onClick={onClose} />
-                      ) : (
-                        <ExpandMore data-id={menuKey} />
-                      )}
-                    </div>
-                  ) : null}
-                </Wrapper>
+                </Link>
               </ListItem>
-
-              <Collapse in={openId == menuKey} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {subKeys.map(subKey => {
-                    return (
-                      <ListItem
-                        key={menuKey + subKey}
-                        onClick={props.onClose}
-                        button
-                        className={classes.nested}
-                      >
-                        <Link to={"/" + subKey}>
-                          <ListItemText
-                            className={classes.text}
-                            primary={subKey}
-                            inset
-                            classes={{ primary: classes.text }}
-                          />
-                        </Link>
-                      </ListItem>
-                    );
-                  })}
-                </List>
-              </Collapse>
             </Fragment>
           );
         })}

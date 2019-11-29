@@ -46,6 +46,7 @@ export default function Form(props) {
 
   React.useEffect(() => {
     const { sections, values } = columnsFromSchema();
+
     setSections(sections);
     props.setValues({ ...values, ...(props.values || {}) });
   }, []);
@@ -64,11 +65,15 @@ export default function Form(props) {
   function changeAutocompleteField(column, record) {
     var newValues = {
       ...props.values,
+      [`__${column.key}`]: {
+        value: record[column.nameField]
+      },
       [column.key]: {
         value: record.id,
         metadata: { id: record.id, name: record[column.nameField] }
       }
     };
+
     props.setValues(newValues);
   }
 
@@ -135,7 +140,7 @@ export default function Form(props) {
 
   function columnsFromSchema() {
     var values = {};
-    var sections = props.sections.map(section => {
+    var sections = props.schema.form.map(section => {
       section.columns = section.columns.map(column => {
         if (column.render == "string" || column.render == "text")
           values[column.key] = { value: column.default || "" };
@@ -153,7 +158,7 @@ export default function Form(props) {
           values[column.key] = { value: column.default || {} };
         } else if (column.default)
           values[column.key] = { value: column.default };
-        else return {};
+        else values[column.key] = { value: null };
 
         column.name = column.title;
         return column;
@@ -165,19 +170,19 @@ export default function Form(props) {
   }
 
   function renderField(column, sectionIndex, index) {
-    if (column.render == "autocomplete")
+    if (column.render == "autocomplete") {
       return (
         <Autocomplete
           isCreate={props.isCreate}
           fieldIndex={index}
           sectionIndex={sectionIndex}
+          values={props.values}
           value={props.values[column.key].value}
-          metadata={props.values[column.key]}
           onChange={changeAutocompleteField}
           column={column}
         />
       );
-    else if (column.render == "boolean") {
+    } else if (column.render == "boolean") {
       return (
         <React.Fragment>
           <FormLabel component="legend">{column.title}</FormLabel>

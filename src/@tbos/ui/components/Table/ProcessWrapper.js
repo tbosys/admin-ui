@@ -4,7 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Table from "@tbos/ui/components/Table";
 
 import useProcessQuery from "@tbos/ui/business/hooks/useProcessQuery";
-import useFetch from "business/hooks/useFetch";
+
+import useFetch from "@tbos/ui/business/hooks/useFetch";
+
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -47,20 +49,21 @@ export default function StandardApp(props) {
     filter,
     totalCount
   } = useProcessQuery({
-    path: `${props.schema.api}/${props.schema.key}/get`,
+    path: `crm/${props.schema.key}/get`,
     limit: 25,
     statusField: statusFieldName
   });
   //
 
   const { fetch: fetchGroup, data: groupData } = useFetch({
-    path: `${props.schema.api}/${props.schema.key}/groupBy`
+    path: `crm/${props.schema.key}/groupBy`
   });
 
+  console.log(props.version);
   React.useEffect(() => {
     fetchData({ status: props.statusList[0] });
     fetchGroup({ groupBy: [statusFieldName], count: true, inProgress: true });
-  }, []);
+  }, [props.version]);
 
   React.useEffect(() => {
     var newState = {};
@@ -140,7 +143,11 @@ export default function StandardApp(props) {
             >
               <Grid item>
                 <Grid container spacing={1} direction="row" alignItems="center">
-                  {((props.actionsPerState || {})[status] || []).map(action => (
+                  {(
+                    (props.actionsPerState || { [status]: props.statusList })[
+                      status
+                    ] || []
+                  ).map(action => (
                     <Grid item>
                       <Button
                         disabled={selectedRows.length == 0}
@@ -151,7 +158,7 @@ export default function StandardApp(props) {
                         variant="outlined"
                         color="primary"
                       >
-                        {action.title}
+                        {action}
                       </Button>
                     </Grid>
                   ))}
@@ -187,6 +194,7 @@ export default function StandardApp(props) {
   return (
     <Fragment>
       <Table
+        onView={props.onView}
         schema={props.schema}
         onSort={onSort}
         setSelectedRows={setSelectedRows}

@@ -99,6 +99,7 @@
       "filter": "string",
       "render": "autocomplete",
       "width": 200,
+
       "nameField": "name",
       "path": "crm/cliente",
       "sortable": true

@@ -16,12 +16,12 @@ export default function EditForm(props) {
   //
   //Data API
   const { mutate, response, loading, error } = useMutation({
-    path: `${props.schema.api}/${props.schema.key}/update`,
+    path: `crm/${props.schema.key}/update`,
     transformValue: true
   });
 
   const { fetch, data, loading: loadingId, error: errorId } = useFetch({
-    path: `${props.schema.api}/${props.schema.key}/get`
+    path: `crm/${props.schema.key}/get`
   });
   //
   //
@@ -58,8 +58,10 @@ export default function EditForm(props) {
     Object.keys(values).forEach(key => {
       var column = props.schema.properties[key];
       var value = values[key].value;
-      if (value !== data.edges[0][key])
-        body[column.keyAlias || column.key] = value;
+      if (value != data.edges[0][key]) {
+        if (column) body[column.keyAlias || column.key] = value;
+        else body[key] = value;
+      }
     });
     mutate(body, true).then(responseData => props.handleClose(responseData));
   }
@@ -86,7 +88,6 @@ export default function EditForm(props) {
         values={values}
         setValues={setValues}
         handleClose={props.handleClose}
-        sections={props.sections}
         isCreate={false}
         schema={props.schema}
       />

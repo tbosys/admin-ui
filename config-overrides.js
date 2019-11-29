@@ -9,5 +9,9 @@ module.exports = function override(config, env) {
     "react-dom": "@hot-loader/react-dom"
   };
 
+  //if (env !== 'production') {
+   // config = { ...config, ...{ devtool: 'eval-source-map' } };
+ // }
+
   return config;
 };

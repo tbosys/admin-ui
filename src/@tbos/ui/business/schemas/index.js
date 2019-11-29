@@ -1,6 +1,7 @@
 import BaseSchema from "./base.json";
 
 export function loadSchema(Schema) {
+  
   Schema.sections = Schema.form;
   Schema.properties = Object.keys(Schema.properties)
     .map(propertyKey => {
@@ -23,6 +24,8 @@ export function loadSchema(Schema) {
 }
 
 export function enrichSections({ schema, components }) {
+  debugger;
+  if(!schema.sections) return ;
   return schema.sections.map(section => {
     return enrichSection({ schema, section, components });
   });

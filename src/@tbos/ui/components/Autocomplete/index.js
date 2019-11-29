@@ -30,10 +30,6 @@ export default function FormDialog(props) {
     setView("LIST");
   }
 
-  let value = "";
-  if (props.value && props.metadata)
-    value = props.metadata[props.column.nameField];
-
   function renderList() {
     return (
       <Dialog
@@ -79,6 +75,10 @@ export default function FormDialog(props) {
     );
   }
 
+  let _itemId = "";
+  if (props.value && props.values[`__${props.column.key}`])
+    _itemId = props.values[`__${props.column.key}`];
+
   return (
     <div>
       <TextField
@@ -86,8 +86,9 @@ export default function FormDialog(props) {
           setView("LIST");
         }}
         fullWidth
-        value={value}
+        value={_itemId.value}
         label={props.column.title}
+        InputLabelProps={{ shrink: true }}
       />
       {renderList()}
       {renderCreate()}

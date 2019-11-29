@@ -76,8 +76,10 @@ export default function ProfileSelector(props) {
 
   React.useEffect(() => {
     var value = props.value || [];
-    setSelectedValue(value);
-    setSelectedProfileIds(value.map(item => item.profileId));
+    if (Array.isArray(value)) {
+      setSelectedValue(value);
+      setSelectedProfileIds(value.map(item => item.profileId));
+    }
   }, [props.value]);
 
   React.useEffect(() => {

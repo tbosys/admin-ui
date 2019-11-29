@@ -10,7 +10,8 @@ export default function(column) {
     var classes = useStyles();
     var value = props.value;
     if (!value) return "";
-    if (props.row[column.key] && props.row["__" + column.key]) return props.row["__" + column.key];
+    if (props.row[column.key] && props.row["__" + column.key])
+      return props.row["__" + column.key];
     return value;
   };
 }

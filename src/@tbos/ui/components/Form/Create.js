@@ -8,7 +8,7 @@ export default function Create(props) {
   const [values, setValues] = React.useState({});
 
   const { mutate, response, loading, error } = useMutation({
-    path: `${props.schema.api}/${props.schema.key}/create`,
+    path: `crm/${props.schema.key}/create`,
     transformValue: true
   });
 
@@ -17,7 +17,8 @@ export default function Create(props) {
 
     Object.keys(values).forEach(key => {
       var column = props.schema.properties[key];
-      body[column.keyAlias || column.key] = values[key].value;
+      if (column) body[column.keyAlias || column.key] = values[key].value;
+      else body[key] = values[key].value;
     });
     mutate(body, true).then(responseData => props.handleClose(responseData));
   }
@@ -38,7 +39,6 @@ export default function Create(props) {
         values={values}
         setValues={setValues}
         handleClose={props.handleClose}
-        sections={props.sections}
         isCreate={true}
         schema={props.schema}
       />

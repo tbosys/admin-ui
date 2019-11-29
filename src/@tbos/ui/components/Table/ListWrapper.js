@@ -32,18 +32,15 @@ export default function StandardApp(props) {
     filter,
     totalCount
   } = useQuery({
-    path: `${props.schema.api}/${props.schema.key}/get`,
+    path: `crm/${props.schema.key}/get`,
     limit: 25
   });
   //
 
   React.useEffect(() => {
-    fetchData();
-  }, []);
-
-  React.useEffect(() => {
-    fetchAgain();
-  }, [props.updateHistory]);
+    if (props.version == 0) fetchData();
+    else fetchAgain();
+  }, [props.version]);
 
   //Effects
   React.useEffect(() => {

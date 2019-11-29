@@ -23,7 +23,7 @@ export default function Routes(props) {
     var lastKey = keys[keys.length - 1];
     var App = props.apps[lastKey];
 
-    if (Array.isArray(App)) App = StandardContainer(lastKey, App);
+    if (!App) App = StandardContainer(lastKey, App);
     const route = `/: ${keys.map(key => key.toLowerCase()).join("/")}`;
     routes.push(
       <Route
