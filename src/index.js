@@ -13,6 +13,7 @@ serviceWorker.unregister();
 const config = lazy(() => import("@tbos/ui/apps/Config"));
 const home = lazy(() => import("@tbos/ui/apps/Home"));
 const owner = lazy(() => import("@tbos/ui/apps/admin/Owner"));
+const profile = lazy(() => import("@tbos/ui/apps/admin/Profile"));
 const report = lazy(() => import("@tbos/ui/apps/admin/Report"));
 const table = lazy(() => import("@tbos/ui/apps/admin/Table"));
 
@@ -22,6 +23,7 @@ export const apps = {
   home,
   owner,
   table,
+  profile,
   config,
   report
 };

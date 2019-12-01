@@ -99,21 +99,12 @@
       "filter": "string",
       "render": "autocomplete",
       "width": 200,
-
+      "table": "cliente",
       "nameField": "name",
       "path": "crm/cliente",
       "sortable": true
     },
 
-    "transporteId": {
-      "sortable": true,
-      "title": "Transporte",
-      "table": "transporte",
-      "filter": "string",
-      "render": "autocomplete",
-      "nameField": "name",
-      "width": 220
-    },
     "fecha": {
       "title": "Fecha",
       "extends": "date",
@@ -125,6 +116,7 @@
       "sortable": true,
       "title": "Zona",
       "filter": "string",
+      "table": "zona",
       "render": "autocomplete",
       "nameField": "name",
       "width": 150
@@ -133,6 +125,7 @@
       "sortable": true,
       "title": "Propietario",
       "filter": "string",
+      "table": "owner",
       "render": "autocomplete",
       "nameField": "name",
       "width": 200

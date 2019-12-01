@@ -58,7 +58,7 @@ export default function EditForm(props) {
     Object.keys(values).forEach(key => {
       var column = props.schema.properties[key];
       var value = values[key].value;
-      if (value != data.edges[0][key]) {
+      if (key == "updatedAt" || value != data.edges[0][key]) {
         if (column) body[column.keyAlias || column.key] = value;
         else body[key] = value;
       }

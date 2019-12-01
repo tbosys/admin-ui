@@ -268,6 +268,8 @@ export default function Form(props) {
         </FormControl>
       );
     } else if (column.render == "component") {
+      if (!column.component)
+        alert("Component not found, check that register it and/or the App");
       return (
         <column.component
           values={props.values}

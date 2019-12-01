@@ -24,7 +24,6 @@ export default function OwnerAdminApp(props) {
     <StandardListApp
       actions={[
         { title: "Administrar Perfiles", standalone: true },
-        { title: "Administrar Roles", standalone: true },
         { title: "Login" }
       ]}
       components={{ profileSelector: ProfileSelector }}

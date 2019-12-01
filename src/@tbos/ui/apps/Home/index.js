@@ -22,6 +22,8 @@ import Chart from "./components/Chart";
 import Deposits from "./components/Deposits";
 import Orders from "./components/Orders";
 
+import useMetadata from "@tbos/ui/business/hooks/useMetadata";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -122,6 +124,20 @@ export default function Dashboard(props) {
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
+  const {
+    fetch: fetchMetadata,
+    metadata: loadedMetadata,
+    loading: loading,
+    error: error
+  } = useMetadata({
+    name: "orden"
+  });
+
+  React.useEffect(() => {
+    fetchMetadata();
+  }, []);
+
   const handleDrawerClose = () => {
     setOpen(false);
   };
