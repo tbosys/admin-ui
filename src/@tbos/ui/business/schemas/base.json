@@ -101,7 +101,6 @@
       "width": 200,
       "table": "cliente",
       "nameField": "name",
-      "path": "crm/cliente",
       "sortable": true
     },
 
@@ -112,22 +111,13 @@
       "width": 100
     },
 
-    "zonaId": {
-      "sortable": true,
-      "title": "Zona",
-      "filter": "string",
-      "table": "zona",
-      "render": "autocomplete",
-      "nameField": "name",
-      "width": 150
-    },
     "ownerId": {
       "sortable": true,
       "title": "Propietario",
       "filter": "string",
-      "table": "owner",
+
       "render": "autocomplete",
-      "nameField": "name",
+
       "width": 200
     },
     "createdBy": {

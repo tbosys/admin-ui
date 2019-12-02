@@ -118,7 +118,7 @@ export default function RoleSelector(props) {
               .filter(
                 role =>
                   props.value &&
-                  props.value.length &&
+                  props.value.length != null &&
                   props.value.indexOf(role.name) == -1
               )
               .map(role => {

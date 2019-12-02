@@ -30,15 +30,27 @@ export default function ErrorComponent(props) {
         TransitionComponent={Transition}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description">
-        <DialogTitle style={{ color: red[500] }}>{"Error"}</DialogTitle>
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle style={{ color: red[500] }}>
+          {props.error.title || "Error"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {props.error.label || props.error.message}
+            {props.error &&
+              props.error.message &&
+              props.error.message.split(",").map(error => {
+                return <div>{error}</div>;
+              })}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} variant="contained" color="secondary" autoFocus>
+          <Button
+            onClick={handleClose}
+            variant="contained"
+            color="secondary"
+            autoFocus
+          >
             Ok
           </Button>
         </DialogActions>

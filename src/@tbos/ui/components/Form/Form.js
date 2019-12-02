@@ -109,6 +109,7 @@ export default function Form(props) {
 
   function onChangeIntegerField(column) {
     return e => {
+      debugger;
       var newValues = {
         ...props.values,
         [column.key]: { value: parseInt(e.target.value) }
@@ -142,23 +143,21 @@ export default function Form(props) {
     var values = {};
     var sections = props.schema.form.map(section => {
       section.columns = section.columns.map(column => {
-        if (column.render == "string" || column.render == "text")
-          values[column.key] = { value: column.default || "" };
-        else if (column.render == "date")
-          values[column.key] = { value: column.default ? new Date() : null };
-        else if (column.render == "boolean")
-          values[column.key] = { value: column.default || true };
-        else if (column.render == "number")
-          values[column.key] = { value: column.default || "" };
-        else if (column.render == "integer")
-          values[column.key] = { value: column.default || "" };
-        else if (column.render == "select")
-          values[column.key] = { value: column.default || "" };
-        else if (column.render == "component") {
+        if (column.type == "string") {
+          values[column.key] = { value: column.default || null };
+        } else if (column.type == "boolean") {
+          values[column.key] = { value: column.default || null };
+        } else if (column.type == "number") {
+          values[column.key] = { value: column.default || null };
+        } else if (column.type == "integer") {
+          values[column.key] = { value: column.default || null };
+        } else if (column.render == "component") {
           values[column.key] = { value: column.default || {} };
-        } else if (column.default)
+        } else if (column.default) {
           values[column.key] = { value: column.default };
-        else values[column.key] = { value: null };
+        } else {
+          values[column.key] = { value: null };
+        }
 
         column.name = column.title;
         return column;
@@ -166,6 +165,7 @@ export default function Form(props) {
 
       return section;
     });
+
     return { sections, values };
   }
 

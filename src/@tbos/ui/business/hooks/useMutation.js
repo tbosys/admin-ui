@@ -14,9 +14,11 @@ export default function useMutation(mutation) {
     if (mutation.transformValue) {
       var newValues = {};
       Object.keys(variables).forEach(key => {
-        if (variables[key]) newValues[key] = variables[key].value;
+        if (variables[key] && variables[key].value != null)
+          newValues[key] = variables[key].value;
       });
     }
+
     setError({ message: null, success: false });
     setLoading(true);
     try {

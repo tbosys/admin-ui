@@ -32,13 +32,15 @@ export default function AutocompleteList(props) {
   const [value] = useDebounce(searchTerm, 500);
 
   const { data: records, fetch: getRecords } = useQuery({
-    path: `${props.column.path}/get`,
+    path: `crm/${props.column.table || props.column.key.replace("Id", "")}/get`,
     limit: 20
   });
 
   React.useEffect(() => {
     if (!value || value.length == 0) return;
-    getRecords({ filters: [[props.column.nameField, "LIKE", value]] });
+    getRecords({
+      filters: [[props.column.nameField || "name", "LIKE", value]]
+    });
   }, [value]);
 
   function onTextChange(e) {

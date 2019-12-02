@@ -60,25 +60,19 @@ class Ajax {
 
   transformHandledError = function({ response, status }) {
     var e = {
+      status: status,
       handled: true,
-      message:
-        response.message || response.label || response.error || response.body,
-      status
+      ...response
     };
-    if (response.label) e.label = response.label;
-    else e.label = e.message || JSON.stringify(e);
     return e;
   };
 
   transformUnHandledError = function({ response, status }) {
     var e = {
+      status: status,
       handled: false,
-      message:
-        response.message || response.label || response.error || response.body,
-      status
+      ...response
     };
-    if (response.label) e.label = response.label;
-    else e.label = e.message || JSON.stringify(e);
     return e;
   };
 
