@@ -32,7 +32,7 @@
     "react-emotion": "^9.2.12",
     "react-number-format": "^4.3.1",
     "react-router-dom": "^5.1.0",
-    "react-scripts": "3.2.0",
+    "react-scripts": "5.0.1",
     "react-table": "^7.0.0-beta.15",
     "react-use-dimensions": "^1.2.1",
     "react-virtualized": "^9.21.1",
